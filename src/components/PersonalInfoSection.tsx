@@ -193,8 +193,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="nombre"
               name="nombre"
+
               placeholder="Ejemplo Omar"
               className={`${inputClasses} ${errors.nombre ? 'border-red-500' : ''}`}
+
               value={formData.nombre}
               onChange={handleInputChange}
               onBlur={() => validateField('nombre')}
@@ -209,7 +211,9 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="segundoNombre"
               name="segundoNombre"
+
               placeholder="Ejemplo David"
+
               className={inputClasses}
               value={formData.segundoNombre}
               onChange={handleInputChange}
@@ -223,8 +227,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="primerApellido"
               name="primerApellido"
+
               placeholder="Ejemplo Fuertes"
               className={`${inputClasses} ${errors.primerApellido ? 'border-red-500' : ''}`}
+
               value={formData.primerApellido}
               onChange={handleInputChange}
               onBlur={() => validateField('primerApellido')}
@@ -239,7 +245,9 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="segundoApellido"
               name="segundoApellido"
+
               placeholder="Ejemplo García"
+
               className={inputClasses}
               value={formData.segundoApellido}
               onChange={handleInputChange}
@@ -290,8 +298,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="numeroDocumento"
               name="numeroDocumento"
-              placeholder="Ejemplo 153456789"
+
+              placeholder="Ejemplo 105456789"
               className={`${inputClasses} ${errors.numeroDocumento ? 'border-red-500' : ''}`}
+
               value={formData.numeroDocumento}
               onChange={handleInputChange}
               onBlur={() => validateField('numeroDocumento')}
@@ -327,8 +337,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="email"
               id="email"
               name="email"
+
               placeholder="Ejemplo omar@dominio.com"
               className={`${inputClasses} ${errors.email ? 'border-red-500' : ''}`}
+
               value={formData.email}
               onChange={handleInputChange}
               onBlur={() => validateField('email')}
@@ -345,6 +357,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               name="telefono"
               placeholder="Ejemplo +57 123456789"
               className={`${inputClasses} ${errors.telefono ? 'border-red-500' : ''}`}
+
               value={formData.telefono}
               onChange={handleInputChange}
             />

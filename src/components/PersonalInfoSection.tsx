@@ -202,9 +202,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               <option value="" disabled>
                 Seleccione
               </option>
-              <option value="cc">Cédula de Ciudadanía</option>
-              <option value="ti">Tarjeta de Identidad</option>
-              <option value="pasaporte">Pasaporte</option>
+              <option value="CC">Cédula de Ciudadanía</option>
+              <option value="TI">Tarjeta de Identidad</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Licencia de conducción">Licencia de conducción</option>
             </select>
           </div>
           <div>
@@ -255,10 +256,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               <option value="" disabled>
                 Seleccione
               </option>
-              <option value="soltero">Soltero</option>
-              <option value="casado">Casado</option>
-              <option value="divorciado">Divorciado</option>
-              <option value="viudo">Viudo</option>
+              <option value="soltero(a)">Soltero/a</option>
+              <option value="casado(a)">Casado/a</option>
+              <option value="divorciado(a)">Divorciado/a</option>
+              <option value="viudo(a)">Viudo/a</option>
             </select>
           </div>
           <div>

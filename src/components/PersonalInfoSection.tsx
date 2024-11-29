@@ -123,7 +123,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="nombre"
               name="nombre"
-              placeholder="Ejemplo: Juan"
+              placeholder="Ej Omar"
               className={`${inputClasses} ${isFieldInvalid('nombre') ? 'border-red-500' : ''}`}
               value={formData.nombre}
               onChange={handleInputChange}
@@ -138,7 +138,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="segundoNombre"
               name="segundoNombre"
-              placeholder="Ejemplo: Carlos"
+              placeholder="Ej David"
               className={inputClasses}
               value={formData.segundoNombre}
               onChange={handleInputChange}
@@ -153,7 +153,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="primerApellido"
               name="primerApellido"
-              placeholder="Ejemplo: Pérez"
+              placeholder="Ej Fuertes"
               className={`${inputClasses} ${isFieldInvalid('primerApellido') ? 'border-red-500' : ''}`}
               value={formData.primerApellido}
               onChange={handleInputChange}
@@ -168,7 +168,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="segundoApellido"
               name="segundoApellido"
-              placeholder="Ejemplo: Gómez"
+              placeholder="Ej García"
               className={inputClasses}
               value={formData.segundoApellido}
               onChange={handleInputChange}
@@ -215,7 +215,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="numeroDocumento"
               name="numeroDocumento"
-              placeholder="Ejemplo: 12345678"
+              placeholder="Ej 1054836222"
               className={`${inputClasses} ${isFieldInvalid('numeroDocumento') ? 'border-red-500' : ''}`}
               value={formData.numeroDocumento}
               onChange={handleInputChange}
@@ -269,7 +269,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="email"
               id="email"
               name="email"
-              placeholder="Ejemplo: ejemplo@dominio.com"
+              placeholder="Ej omardfg@dominio.com"
               className={`${inputClasses} ${isFieldInvalid('email') ? 'border-red-500' : ''}`}
               value={formData.email}
               onChange={handleInputChange}
@@ -283,7 +283,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="telefono"
               name="telefono"
-              placeholder="Ejemplo: 123456789"
+              placeholder="Ej 310 320 1019"
               className={`${inputClasses} ${isFieldInvalid('telefono') ? 'border-red-500' : ''}`}
               value={formData.telefono}
               onChange={handleInputChange}
@@ -298,7 +298,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="celular"
               name="celular"
-              placeholder="Ejemplo: 3001234567"
+              placeholder="Ej 321 322 7778"
               className={`${inputClasses} ${isFieldInvalid('celular') ? 'border-red-500' : ''}`}
               value={formData.celular}
               onChange={handleInputChange}
@@ -326,7 +326,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="pais"
               name="pais"
-              placeholder="Ejemplo: Colombia"
+              placeholder="Ej Colombia"
               className={`${inputClasses} ${isFieldInvalid('pais') ? 'border-red-500' : ''}`}
               value={formData.pais}
               onChange={handleInputChange}
@@ -340,7 +340,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="ciudad"
               name="ciudad"
-              placeholder="Ejemplo: Bogotá"
+              placeholder="Ej Colombia"
               className={`${inputClasses} ${isFieldInvalid('ciudad') ? 'border-red-500' : ''}`}
               value={formData.ciudad}
               onChange={handleInputChange}
@@ -354,7 +354,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="direccion"
               name="direccion"
-              placeholder="Ejemplo: Calle 123 #45-67"
+              placeholder="Ej Carrera 10 #2-7"
               className={`${inputClasses} ${isFieldInvalid('direccion') ? 'border-red-500' : ''}`}
               value={formData.direccion}
               onChange={handleInputChange}

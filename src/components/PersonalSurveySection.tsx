@@ -42,26 +42,25 @@ export default function PersonalSurveySection({ onBack, onFormSubmit }: Personal
             </div>
 
             <div className="space-y-4">
-              {[
-                { value: 'no_tengo', label: 'No tengo' },
+              {[{ value: 'no_tengo', label: 'No tengo' },
                 { value: '1_hijo', label: '1 hijo' },
                 { value: '2_hijos', label: '2 hijos' },
                 { value: '3_hijos', label: '3 hijos' },
-                { value: 'mas_de_4_hijos', label: 'Más de 4 hijos' }
-              ].map((option) => (
-                <div key={option.value} className="flex items-center">
-                  <input
-                    type="radio"
-                    id={`hijos_${option.value}`}
-                    name="hijos"
-                    value={option.value}
-                    required
-                    className={radioClasses}
-                  />
-                  <label htmlFor={`hijos_${option.value}`} className={labelClasses}>
-                    {option.label}
-                  </label>
-                </div>
+                { value: 'mas_de_4_hijos', label: 'Más de 4 hijos' }]
+                .map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`hijos_${option.value}`}
+                      name="hijos"
+                      value={option.value}
+                      required
+                      className={radioClasses}
+                    />
+                    <label htmlFor={`hijos_${option.value}`} className={labelClasses}>
+                      {option.label}
+                    </label>
+                  </div>
               ))}
             </div>
           </div>
@@ -75,26 +74,25 @@ export default function PersonalSurveySection({ onBack, onFormSubmit }: Personal
             </div>
 
             <div className="space-y-4">
-              {[
-                { value: 'ninguna', label: 'Ninguna' },
+              {[{ value: 'ninguna', label: 'Ninguna' },
                 { value: 'indigena', label: 'Indígena' },
                 { value: 'afrocolombianos', label: 'Afrocolombianos' },
                 { value: 'raizales', label: 'Raizales' },
-                { value: 'pueblo_rom', label: 'Pueblo ROM o Gitano' }
-              ].map((option) => (
-                <div key={option.value} className="flex items-center">
-                  <input
-                    type="radio"
-                    id={`poblacion_${option.value}`}
-                    name="poblacion"
-                    value={option.value}
-                    required
-                    className={radioClasses}
-                  />
-                  <label htmlFor={`poblacion_${option.value}`} className={labelClasses}>
-                    {option.label}
-                  </label>
-                </div>
+                { value: 'pueblo_rom', label: 'Pueblo ROM o Gitano' }]
+                .map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`poblacion_${option.value}`}
+                      name="poblacion"
+                      value={option.value}
+                      required
+                      className={radioClasses}
+                    />
+                    <label htmlFor={`poblacion_${option.value}`} className={labelClasses}>
+                      {option.label}
+                    </label>
+                  </div>
               ))}
             </div>
           </div>
@@ -108,29 +106,28 @@ export default function PersonalSurveySection({ onBack, onFormSubmit }: Personal
             </div>
 
             <div className="space-y-4">
-              {[
-                { value: 'ninguna', label: 'Ninguna' },
+              {[{ value: 'ninguna', label: 'Ninguna' },
                 { value: 'motriz', label: 'Discapacidad Motriz' },
                 { value: 'sorda', label: 'Discapacidad Sorda' },
                 { value: 'cognitiva', label: 'Discapacidad Cognitiva' },
                 { value: 'sordo_cego', label: 'Sordo Ceguera' },
                 { value: 'trastorno', label: 'Trastorno de la voz y el habla' },
-                { value: 'otra', label: 'Otra' }
-              ].map((option) => (
-                <div key={option.value} className="flex items-center">
-                  <input
-                    type="radio"
-                    id={`discapacidad_${option.value}`}
-                    name="discapacidad"
-                    value={option.value}
-                    required
-                    className={radioClasses}
-                    onChange={handleDiscapacidadChange}
-                  />
-                  <label htmlFor={`discapacidad_${option.value}`} className={labelClasses}>
-                    {option.label}
-                  </label>
-                </div>
+                { value: 'otra', label: 'Otra' }]
+                .map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`discapacidad_${option.value}`}
+                      name="discapacidad"
+                      value={option.value}
+                      required
+                      className={radioClasses}
+                      onChange={handleDiscapacidadChange}
+                    />
+                    <label htmlFor={`discapacidad_${option.value}`} className={labelClasses}>
+                      {option.label}
+                    </label>
+                  </div>
               ))}
             </div>
 
@@ -159,24 +156,23 @@ export default function PersonalSurveySection({ onBack, onFormSubmit }: Personal
             </div>
 
             <div className="space-y-4">
-              {[
-                { value: 'no_trabajo', label: 'No estoy trabajando' },
+              {[{ value: 'no_trabajo', label: 'No estoy trabajando' },
                 { value: 'empleado', label: 'Sí, soy empleado' },
-                { value: 'independiente', label: 'Sí, soy independiente' }
-              ].map((option) => (
-                <div key={option.value} className="flex items-center">
-                  <input
-                    type="radio"
-                    id={`trabajo_${option.value}`}
-                    name="trabajo"
-                    value={option.value}
-                    required
-                    className={radioClasses}
-                  />
-                  <label htmlFor={`trabajo_${option.value}`} className={labelClasses}>
-                    {option.label}
-                  </label>
-                </div>
+                { value: 'independiente', label: 'Sí, soy independiente' }]
+                .map((option) => (
+                  <div key={option.value} className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`trabajo_${option.value}`}
+                      name="trabajo"
+                      value={option.value}
+                      required
+                      className={radioClasses}
+                    />
+                    <label htmlFor={`trabajo_${option.value}`} className={labelClasses}>
+                      {option.label}
+                    </label>
+                  </div>
               ))}
             </div>
           </div>

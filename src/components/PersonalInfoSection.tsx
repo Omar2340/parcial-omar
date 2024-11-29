@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { User, ChevronLeft, ChevronRight, Mail, Phone, MapPin, AlertCircle } from 'lucide-react';
+import { useState } from 'react'; 
+import { User, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface PersonalInfoSectionProps {
   onBack: () => void;
@@ -33,72 +33,141 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
     numeroDocumento: '',
     telefono: '',
     celular: '',
+    fechaNacimiento: '',
+    tipoDocumento: '',
+    sexo: '',
+    email: '',
+    pais: '',
+    ciudad: '',
+    direccion: '',
   });
-
-  const [isFormValid, setIsFormValid] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
+    // Validación específica de campos con restricciones de caracteres
+    if (name === 'nombre' || name === 'segundoNombre' || name === 'primerApellido' || name === 'segundoApellido') {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return; // No permite caracteres no permitidos
+      }
+    } else if (name === 'numeroDocumento') {
+      if (!/^[0-9\s]*$/.test(value)) {
+        return; // No permite letras en el número de documento
+      }
+    } else if (name === 'telefono' || name === 'celular') {
+      if (!/^[\+\-\d\s]*$/.test(value)) {
+        return; // Permite números, espacios, + y -
+      }
+    } else if (name === 'pais' || name === 'ciudad') {
+      if (!/^[a-zA-Z\s]*$/.test(value)) {
+        return; // No permite números en estos campos
+      }
+    }
+
     setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
 
-    // Validación de solo letras para campos específicos
-    if (['nombre', 'segundoNombre', 'primerApellido', 'segundoApellido'].includes(name)) {
-      const regex = /^[A-Za-z\s]*$/;
-      if (!regex.test(value)) {
-        setErrors(prev => ({
-          ...prev,
-          [name]: 'En este campo solo se permiten letras.',
-        }));
-      } else {
-        setErrors(prev => ({
-          ...prev,
-          [name]: '',
-        }));
-      }
+    // Solo valida los campos si se presionó el botón de "Siguiente"
+    if (errors[name]) {
+      validateField(name);
     }
-
-    // Validación de solo números para campos específicos
-    if (['numeroDocumento', 'telefono', 'celular'].includes(name)) {
-      const regex = /^[0-9]*$/;
-      if (!regex.test(value)) {
-        setErrors(prev => ({
-          ...prev,
-          [name]: 'En este campo solo se permiten números.',
-        }));
-      } else {
-        setErrors(prev => ({
-          ...prev,
-          [name]: '',
-        }));
-      }
-    }
-
-    // Verificar si todos los campos son válidos para activar el botón "Siguiente"
-    validateForm();
   };
 
-  const validateForm = () => {
+  const validateField = (fieldName: string) => {
+    let error = '';
+    if (!formData[fieldName]?.trim()) {
+      error = 'Este campo es obligatorio.';
+    } else {
+      switch (fieldName) {
+        case 'fechaNacimiento':
+          const date = new Date(formData[fieldName]);
+          const today = new Date();
+  
+          // Verifica si la fecha es válida y no es futura
+          if (isNaN(date.getTime())) {
+            error = 'Ingrese una fecha válida.';
+          } else if (date > today) {
+            error = 'La fecha de nacimiento no puede ser futura.';
+          }
+          break;
+  
+        // Validación de caracteres para otros campos
+        case 'pais':
+        case 'ciudad':
+          if (!/^[a-zA-Z\s]*$/.test(formData[fieldName])) {
+            error = 'Solo se permiten letras y espacios.';
+          }
+          break;
+  
+        case 'telefono':
+        case 'celular':
+          if (!/^[\+\-\d\s]*$/.test(formData[fieldName])) {
+            error = 'Solo se permiten números, espacios, + y -.';
+          }
+          break;
+  
+        default:
+          break;
+      }
+    }
+  
+    setErrors(prev => ({
+      ...prev,
+      [fieldName]: error,
+    }));
+  };
+  
+
+  const handleNext = () => {
     const requiredFields = [
-      'nombre', 'primerApellido', 'fechaNacimiento', 'tipoDocumento',
-      'numeroDocumento', 'sexo', 'email', 'telefono', 'pais', 'ciudad', 'direccion'
+      'nombre',
+      'primerApellido',
+      'numeroDocumento',
+      'fechaNacimiento',
+      'tipoDocumento',
+      'sexo',
+      'email',
+      'celular',
+      'pais',
+      'ciudad',
+      'direccion'
     ];
 
-    const isFormValid = requiredFields.every(field => {
-      return (
-        !isFieldInvalid(field) &&
-        !errors[field] &&
-        (field !== 'nombre' && field !== 'segundoNombre' && field !== 'primerApellido' && field !== 'segundoApellido' ? true : /^[A-Za-z\s]*$/.test(formData[field])) &&
-        (field !== 'numeroDocumento' && field !== 'telefono' && field !== 'celular' ? true : /^[0-9]*$/.test(formData[field]))
-      );
+    let isValid = true;
+    let newErrors = { ...errors };
+
+    requiredFields.forEach(field => {
+      if (!formData[field]?.trim()) {
+        newErrors[field] = 'Este campo es obligatorio.';
+        isValid = false;
+      } else {
+        // Validación de caracteres en campos específicos
+        if (
+          (field === 'pais' || field === 'ciudad') && !/^[a-zA-Z\s]*$/.test(formData[field])
+        ) {
+          newErrors[field] = 'Solo se permiten letras y espacios.';
+          isValid = false;
+        }
+        if (
+          (field === 'telefono' || field === 'celular') && !/^[\+\-\d\s]*$/.test(formData[field])
+        ) {
+          newErrors[field] = 'Solo se permiten números, espacios, + y -.';
+          isValid = false;
+        }
+      }
     });
 
-    setIsFormValid(isFormValid);
+    setErrors(newErrors);
+
+    if (isValid) {
+      onNext();
+    } else {
+      alert('Por favor, complete todos los campos obligatorios correctamente.');
+    }
   };
 
-  const isFieldInvalid = (fieldName: string) => !formData[fieldName]?.trim();
   const inputClasses =
     'mt-1 block w-full rounded-lg border-orange-200 shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50';
   const labelClasses = 'block text-sm font-medium text-gray-700';
@@ -115,6 +184,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          {/* Campos de formulario */}
           <div>
             <label htmlFor="nombre" className={labelClasses}>
               Primer Nombre <span className="text-red-500">*</span>
@@ -123,10 +193,11 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="nombre"
               name="nombre"
-              placeholder="Ej Omar"
-              className={`${inputClasses} ${isFieldInvalid('nombre') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo Omar"
+              className={`${inputClasses} ${errors.nombre ? 'border-red-500' : ''}`}
               value={formData.nombre}
               onChange={handleInputChange}
+              onBlur={() => validateField('nombre')}
             />
             {errors.nombre && <p className="text-red-500 text-xs mt-1">{errors.nombre}</p>}
           </div>
@@ -138,12 +209,11 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="segundoNombre"
               name="segundoNombre"
-              placeholder="Ej David"
+              placeholder="Ejemplo David"
               className={inputClasses}
               value={formData.segundoNombre}
               onChange={handleInputChange}
             />
-            {errors.segundoNombre && <p className="text-red-500 text-xs mt-1">{errors.segundoNombre}</p>}
           </div>
           <div>
             <label htmlFor="primerApellido" className={labelClasses}>
@@ -153,10 +223,11 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="primerApellido"
               name="primerApellido"
-              placeholder="Ej Fuertes"
-              className={`${inputClasses} ${isFieldInvalid('primerApellido') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo Fuertes"
+              className={`${inputClasses} ${errors.primerApellido ? 'border-red-500' : ''}`}
               value={formData.primerApellido}
               onChange={handleInputChange}
+              onBlur={() => validateField('primerApellido')}
             />
             {errors.primerApellido && <p className="text-red-500 text-xs mt-1">{errors.primerApellido}</p>}
           </div>
@@ -168,12 +239,11 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="segundoApellido"
               name="segundoApellido"
-              placeholder="Ej García"
+              placeholder="Ejemplo García"
               className={inputClasses}
               value={formData.segundoApellido}
               onChange={handleInputChange}
             />
-            {errors.segundoApellido && <p className="text-red-500 text-xs mt-1">{errors.segundoApellido}</p>}
           </div>
           <div>
             <label htmlFor="fechaNacimiento" className={labelClasses}>
@@ -183,10 +253,12 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="date"
               id="fechaNacimiento"
               name="fechaNacimiento"
-              className={`${inputClasses} ${isFieldInvalid('fechaNacimiento') ? 'border-red-500' : ''}`}
+              className={`${inputClasses} ${errors.fechaNacimiento ? 'border-red-500' : ''}`}
               value={formData.fechaNacimiento}
               onChange={handleInputChange}
+              onBlur={() => validateField('fechaNacimiento')}
             />
+            {errors.fechaNacimiento && <p className="text-red-500 text-xs mt-1">{errors.fechaNacimiento}</p>}
           </div>
           <div>
             <label htmlFor="tipoDocumento" className={labelClasses}>
@@ -195,9 +267,10 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
             <select
               id="tipoDocumento"
               name="tipoDocumento"
-              className={`${inputClasses} ${isFieldInvalid('tipoDocumento') ? 'border-red-500' : ''}`}
+              className={`${inputClasses} ${errors.tipoDocumento ? 'border-red-500' : ''}`}
               value={formData.tipoDocumento}
               onChange={handleInputChange}
+              onBlur={() => validateField('tipoDocumento')}
             >
               <option value="" disabled>
                 Seleccione
@@ -207,6 +280,7 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               <option value="Pasaporte">Pasaporte</option>
               <option value="Licencia de conducción">Licencia de conducción</option>
             </select>
+            {errors.tipoDocumento && <p className="text-red-500 text-xs mt-1">{errors.tipoDocumento}</p>}
           </div>
           <div>
             <label htmlFor="numeroDocumento" className={labelClasses}>
@@ -216,76 +290,61 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="numeroDocumento"
               name="numeroDocumento"
-              placeholder="Ej 1054836222"
-              className={`${inputClasses} ${isFieldInvalid('numeroDocumento') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo 153456789"
+              className={`${inputClasses} ${errors.numeroDocumento ? 'border-red-500' : ''}`}
               value={formData.numeroDocumento}
               onChange={handleInputChange}
+              onBlur={() => validateField('numeroDocumento')}
             />
             {errors.numeroDocumento && <p className="text-red-500 text-xs mt-1">{errors.numeroDocumento}</p>}
           </div>
           <div>
             <label htmlFor="sexo" className={labelClasses}>
-              Sexo Biológico <span className="text-red-500">*</span>
+              Sexo <span className="text-red-500">*</span>
             </label>
             <select
               id="sexo"
               name="sexo"
-              className={`${inputClasses} ${isFieldInvalid('sexo') ? 'border-red-500' : ''}`}
+              className={`${inputClasses} ${errors.sexo ? 'border-red-500' : ''}`}
               value={formData.sexo}
               onChange={handleInputChange}
+              onBlur={() => validateField('sexo')}
             >
               <option value="" disabled>
                 Seleccione
               </option>
-              <option value="masculino">Masculino</option>
-              <option value="femenino">Femenino</option>
-              <option value="otro">Otro</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
             </select>
-          </div>
-          <div>
-            <label htmlFor="estadoCivil" className={labelClasses}>
-              Estado Civil <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="estadoCivil"
-              name="estadoCivil"
-              className={`${inputClasses} ${isFieldInvalid('estadoCivil') ? 'border-red-500' : ''}`}
-              value={formData.estadoCivil}
-              onChange={handleInputChange}
-            >
-              <option value="" disabled>
-                Seleccione
-              </option>
-              <option value="soltero(a)">Soltero/a</option>
-              <option value="casado(a)">Casado/a</option>
-              <option value="divorciado(a)">Divorciado/a</option>
-              <option value="viudo(a)">Viudo/a</option>
-            </select>
+            {errors.sexo && <p className="text-red-500 text-xs mt-1">{errors.sexo}</p>}
           </div>
           <div>
             <label htmlFor="email" className={labelClasses}>
-              Correo Electrónico <span className="text-red-500">*</span>
+              Email <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
               id="email"
               name="email"
-              placeholder="Ej omardfg@dominio.com"
-              className={`${inputClasses} ${isFieldInvalid('email') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo omar@dominio.com"
+              className={`${inputClasses} ${errors.email ? 'border-red-500' : ''}`}
               value={formData.email}
               onChange={handleInputChange}
+              onBlur={() => validateField('email')}
             />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
           </div>
           <div>
             <label htmlFor="telefono" className={labelClasses}>
-              Número de Teléfono <span className="text-red-500">*</span>
+              Teléfono (Opcional)
             </label>
             <input
-              type="text"
+              type="tel"
               id="telefono"
               name="telefono"
-              placeholder="Ej 310 320 1019"
-              className={`${inputClasses} ${isFieldInvalid('telefono') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo +57 123456789"
+              className={`${inputClasses} ${errors.telefono ? 'border-red-500' : ''}`}
               value={formData.telefono}
               onChange={handleInputChange}
             />
@@ -293,32 +352,20 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
           </div>
           <div>
             <label htmlFor="celular" className={labelClasses}>
-              Número de Celular <span className="text-red-500">*</span>
+              Celular <span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
+              type="tel"
               id="celular"
               name="celular"
-              placeholder="Ej 321 322 7778"
-              className={`${inputClasses} ${isFieldInvalid('celular') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo +57 123456789"
+              className={`${inputClasses} ${errors.celular ? 'border-red-500' : ''}`}
               value={formData.celular}
               onChange={handleInputChange}
+              onBlur={() => validateField('celular')}
             />
             {errors.celular && <p className="text-red-500 text-xs mt-1">{errors.celular}</p>}
           </div>
-        </div>
-      </div>
-
-      {/* Grupo: Dirección Residencial */}
-      <div className="bg-white shadow-lg rounded-lg p-8 border border-orange-100">
-        <div className="flex items-center space-x-3 mb-6">
-          <MapPin className="w-6 h-6 text-orange-500" />
-          <legend className="text-xl font-semibold text-gray-900">
-            Dirección Residencial
-          </legend>
-        </div>
-
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="pais" className={labelClasses}>
               País <span className="text-red-500">*</span>
@@ -327,11 +374,13 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="pais"
               name="pais"
-              placeholder="Ej Colombia"
-              className={`${inputClasses} ${isFieldInvalid('pais') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo Colombia"
+              className={`${inputClasses} ${errors.pais ? 'border-red-500' : ''}`}
               value={formData.pais}
               onChange={handleInputChange}
+              onBlur={() => validateField('pais')}
             />
+            {errors.pais && <p className="text-red-500 text-xs mt-1">{errors.pais}</p>}
           </div>
           <div>
             <label htmlFor="ciudad" className={labelClasses}>
@@ -341,11 +390,13 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="ciudad"
               name="ciudad"
-              placeholder="Ej Colombia"
-              className={`${inputClasses} ${isFieldInvalid('ciudad') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo Cartagena"
+              className={`${inputClasses} ${errors.ciudad ? 'border-red-500' : ''}`}
               value={formData.ciudad}
               onChange={handleInputChange}
+              onBlur={() => validateField('ciudad')}
             />
+            {errors.ciudad && <p className="text-red-500 text-xs mt-1">{errors.ciudad}</p>}
           </div>
           <div>
             <label htmlFor="direccion" className={labelClasses}>
@@ -355,40 +406,32 @@ export default function PersonalInfoSection({ onBack, onNext }: PersonalInfoSect
               type="text"
               id="direccion"
               name="direccion"
-              placeholder="Ej Carrera 10 #2-7"
-              className={`${inputClasses} ${isFieldInvalid('direccion') ? 'border-red-500' : ''}`}
+              placeholder="Ejemplo Barrio Villa Grande 2 Calle 11 #3, lote 10"
+              className={`${inputClasses} ${errors.direccion ? 'border-red-500' : ''}`}
               value={formData.direccion}
               onChange={handleInputChange}
+              onBlur={() => validateField('direccion')}
             />
+            {errors.direccion && <p className="text-red-500 text-xs mt-1">{errors.direccion}</p>}
           </div>
         </div>
-      </div>
 
-      {/* Botones */}
-      <div className="flex justify-between mt-4">
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center justify-center rounded-lg border border-orange-200 bg-white px-6 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-        >
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Volver
-        </button>
-        <button
-          type="button"
-          onClick={() => {
-            if (isFormValid) {
-              onNext();
-            } else {
-              alert('Por favor complete todos los campos correctamente.');
-            }
-          }}
-          className="inline-flex items-center justify-center rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-          disabled={!isFormValid}
-        >
-          Siguiente
-          <ChevronRight className="ml-2 h-4 w-4" />
-        </button>
+        <div className="mt-6 flex justify-between">
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center text-gray-500 hover:text-gray-700"
+          >
+            <ChevronLeft className="h-4 w-4" /> Volver
+          </button>
+          <button
+            type="button"
+            onClick={handleNext}
+            className="inline-flex items-center bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
+          >
+            Siguiente <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -12,6 +12,14 @@ function App() {
     e.preventDefault();
     // Handle form submission
     console.log('Form submitted');
+
+    // Mostrar un mensaje de éxito
+    alert('Formulario enviado con éxito');
+
+    // Redirigir a la página principal después de que el usuario presione "Aceptar"
+    setTimeout(() => {
+      setCurrentSection('career');
+    }, 1000); // 1000 ms = 1 segundo de espera antes de redirigir
   };
 
   return (

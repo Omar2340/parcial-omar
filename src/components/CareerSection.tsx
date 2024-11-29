@@ -8,6 +8,14 @@ interface CareerSectionProps {
 export default function CareerSection({ onNext }: CareerSectionProps) {
   const [selectedCareer, setSelectedCareer] = useState('');
 
+  const handleNext = () => {
+    if (selectedCareer === '') {
+      alert('Por favor, seleccione una carrera antes de continuar.');
+      return;
+    }
+    onNext();
+  };
+
   return (
     <div className="bg-white shadow-lg rounded-lg p-8 border border-orange-100">
       <div className="flex items-center space-x-3 mb-6">
@@ -44,7 +52,7 @@ export default function CareerSection({ onNext }: CareerSectionProps) {
       <div className="flex justify-end">
         <button
           type="button"
-          onClick={onNext}
+          onClick={handleNext}
           className="inline-flex items-center justify-center rounded-lg bg-orange-500 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-colors duration-200"
         >
           Siguiente
